@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - TripLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">TripLink</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="find-ride.html" class="nav-link">Find Ride</a></li>
+                    <li><a href="offer-ride.html" class="nav-link">Offer Ride</a></li>
+                    <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <div id="auth-buttons">
+                    <!-- Injected by JS -->
+                </div>
+                <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container page-container profile-layout">
+        <aside class="profile-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar-large"></div>
+                <h2 id="profile-name">User Name</h2>
+                <p id="profile-email" class="profile-email">user@example.com</p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value">4.8</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Rides</span>
+                    </div>
+                </div>
+                <button id="profile-logout-btn" class="btn btn-outline btn-block" style="margin-top: 20px;">Sign
+                    Out</button>
+            </div>
+        </aside>
+
+        <main class="profile-content">
+            <section class="profile-section">
+                <h3>Personal Information</h3>
+                <form class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" value="John Doe" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" value="+91 98765 43210" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea rows="3"
+                            readonly>Frequent traveler between Mumbai and Pune. Love music and good conversations.</textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm">Edit Profile</button>
+                </form>
+            </section>
+
+            <section class="profile-section">
+                <h3>My Trips</h3>
+                <div class="rides-list">
+                    <!-- Upcoming Trip -->
+                    <div class="ride-card horizontal">
+                        <div class="ride-main">
+                            <div class="ride-status badge-upcoming">Upcoming</div>
+                            <div class="ride-times">
+                                <div class="time-loc">
+                                    <span class="time">08:00</span>
+                                    <span class="city">Mumbai</span>
+                                </div>
+                                <div class="duration-line">
+                                    <span class="duration">3h 00m</span>
+                                    <div class="line"></div>
+                                </div>
+                                <div class="time-loc">
+                                    <span class="time">11:00</span>
+                                    <span class="city">Pune</span>
+                                </div>
+                            </div>
+                            <div class="driver-mini">
+                                <span>Driver: Rahul S.</span>
+                            </div>
+                        </div>
+                        <div class="ride-price-action">
+                            <span class="price-large">₹800</span>
+                            <button class="btn btn-outline btn-sm">View Ticket</button>
+                        </div>
+                    </div>
+
+                    <!-- Past Trip -->
+                    <div class="ride-card horizontal">
+                        <div class="ride-main">
+                            <div class="ride-status badge-completed">Completed</div>
+                            <div class="ride-times">
+                                <div class="time-loc">
+                                    <span class="time">17:00</span>
+                                    <span class="city">Pune</span>
+                                </div>
+                                <div class="duration-line">
+                                    <span class="duration">3h 15m</span>
+                                    <div class="line"></div>
+                                </div>
+                                <div class="time-loc">
+                                    <span class="time">20:15</span>
+                                    <span class="city">Mumbai</span>
+                                </div>
+                            </div>
+                            <div class="driver-mini">
+                                <span>Driver: Amit K.</span>
+                            </div>
+                        </div>
+                        <div class="ride-price-action">
+                            <span class="price-large">₹750</span>
+                            <button class="btn btn-outline btn-sm">Rate Driver</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

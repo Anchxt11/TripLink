@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripLink - Share Rides. Save Money. Travel Smarter.</title>
+    <meta name="description" content="Connect with verified carpoolers and enjoy stress-free commuting with TripLink.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">TripLink</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="find-ride.html" class="nav-link" id="nav-find-ride">Find Ride</a></li>
+                    <li><a href="offer-ride.html" class="nav-link" id="nav-offer-ride">Offer Ride</a></li>
+                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#my-trips" class="nav-link" id="nav-my-trips">My Trips</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <a href="login.html" class="btn btn-primary">Sign In / Create Account</a>
+                <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Share Rides. Save Money. <br>Travel Smarter.</h1>
+                <p class="hero-subtitle">Connect with verified carpoolers and enjoy stress-free commuting.</p>
+            </div>
+            <div class="hero-search-card">
+                <form class="search-form">
+                    <div class="form-group">
+                        <label for="from">From</label>
+                        <input type="text" id="from" placeholder="City or address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="to">To</label>
+                        <input type="text" id="to" placeholder="City or address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passengers">Passengers</label>
+                        <select id="passengers">
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4+ Passengers</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Find Ride</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">🔍</div>
+                    <h3>Search or Offer a Ride</h3>
+                    <p>Enter your destination and find a ride that matches your schedule, or offer your empty seats.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">🤝</div>
+                    <h3>Match with Drivers</h3>
+                    <p>Connect with verified drivers or passengers. Check profiles and ratings before you book.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">🚗</div>
+                    <h3>Enjoy the Journey</h3>
+                    <p>Travel together, save money on gas, and make new friends along the way.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Rides -->
+    <section id="featured-rides" class="section featured-rides">
+        <div class="container">
+            <h2 class="section-title">Featured Rides</h2>
+            <div class="rides-grid">
+                <!-- Ride Card 1 -->
+                <div class="ride-card">
+                    <div class="ride-header">
+                        <div class="driver-info">
+                            <div class="driver-avatar"></div>
+                            <div>
+                                <h4>Sarah M.</h4>
+                                <span class="rating">★ 4.9</span>
+                            </div>
+                        </div>
+                        <span class="price">₹1200</span>
+                    </div>
+                    <div class="ride-route">
+                        <div class="route-point">
+                            <span class="time">09:00 AM</span>
+                            <span class="location">San Francisco</span>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <span class="time">10:30 AM</span>
+                            <span class="location">San Jose</span>
+                        </div>
+                    </div>
+                    <div class="ride-footer">
+                        <span class="seats">2 seats left</span>
+                        <button class="btn btn-outline btn-sm">View Details</button>
+                    </div>
+                </div>
+                <!-- Ride Card 2 -->
+                <div class="ride-card">
+                    <div class="ride-header">
+                        <div class="driver-info">
+                            <div class="driver-avatar"></div>
+                            <div>
+                                <h4>David K.</h4>
+                                <span class="rating">★ 4.8</span>
+                            </div>
+                        </div>
+                        <span class="price">₹1800</span>
+                    </div>
+                    <div class="ride-route">
+                        <div class="route-point">
+                            <span class="time">08:00 AM</span>
+                            <span class="location">Los Angeles</span>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <span class="time">11:00 AM</span>
+                            <span class="location">San Diego</span>
+                        </div>
+                    </div>
+                    <div class="ride-footer">
+                        <span class="seats">3 seats left</span>
+                        <button class="btn btn-outline btn-sm">View Details</button>
+                    </div>
+                </div>
+                <!-- Ride Card 3 -->
+                <div class="ride-card">
+                    <div class="ride-header">
+                        <div class="driver-info">
+                            <div class="driver-avatar"></div>
+                            <div>
+                                <h4>Emily R.</h4>
+                                <span class="rating">★ 5.0</span>
+                            </div>
+                        </div>
+                        <span class="price">₹950</span>
+                    </div>
+                    <div class="ride-route">
+                        <div class="route-point">
+                            <span class="time">05:30 PM</span>
+                            <span class="location">Seattle</span>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <span class="time">06:15 PM</span>
+                            <span class="location">Bellevue</span>
+                        </div>
+                    </div>
+                    <div class="ride-footer">
+                        <span class="seats">1 seat left</span>
+                        <button class="btn btn-outline btn-sm">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose TripLink -->
+    <section class="section why-choose">
+        <div class="container">
+            <h2 class="section-title">Why Choose TripLink</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Secure Payments</h3>
+                    <p>All transactions are secure and monitored for your safety.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✅</div>
+                    <h3>Verified Users</h3>
+                    <p>We verify every member to ensure a safe community.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💬</div>
+                    <h3>Real-Time Chat</h3>
+                    <p>Communicate easily with your driver or passengers.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌱</div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Reduce your carbon footprint by sharing rides.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">TripLink</a>
+                <p>Connecting people, places, and possibilities. Join the movement for smarter travel.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Safety</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>support@triplink.com</p>
+                <div class="social-icons">
+                    <a href="#">FB</a>
+                    <a href="#">TW</a>
+                    <a href="#">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TripLink. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
