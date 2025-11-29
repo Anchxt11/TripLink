@@ -105,58 +105,58 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = 'index.html';
                 });
             }
-
-            // Driver Form Submission
-            const driverForm = document.getElementById('driver-form');
-            if (driverForm) {
-                driverForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-
-                    const license = document.getElementById('license').value;
-                    const vehicleMake = document.getElementById('vehicle-make').value;
-                    const vehicleModel = document.getElementById('vehicle-model').value;
-                    const vehiclePlate = document.getElementById('vehicle-plate').value;
-                    const vehicleYear = document.getElementById('vehicle-year').value;
-                    const vehicleColor = document.getElementById('vehicle-color').value;
-                    const submitBtn = driverForm.querySelector('button[type="submit"]');
-
-                    try {
-                        submitBtn.disabled = true;
-                        submitBtn.textContent = 'Saving...';
-
-                        const response = await fetch('https://web-production-7394a.up.railway.app/api/driver-profile/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                email: userEmail,
-                                license_number: license,
-                                vehicle_make: vehicleMake,
-                                vehicle_model: vehicleModel,
-                                vehicle_plate: vehiclePlate,
-                                vehicle_year: vehicleYear,
-                                vehicle_color: vehicleColor
-                            }),
-                        });
-
-                        const data = await response.json();
-
-                        if (response.ok) {
-                            alert('Driver profile saved successfully!');
-                        } else {
-                            alert(data.error || 'Failed to save driver profile.');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Unable to connect to the server.');
-                    } finally {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Save Driver Details';
-                    }
-                });
-            }
         }
+    }
+
+    // Driver Form Submission (Global Listener)
+    const driverForm = document.getElementById('driver-form');
+    if (driverForm) {
+        driverForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const license = document.getElementById('license').value;
+            const vehicleMake = document.getElementById('vehicle-make').value;
+            const vehicleModel = document.getElementById('vehicle-model').value;
+            const vehiclePlate = document.getElementById('vehicle-plate').value;
+            const vehicleYear = document.getElementById('vehicle-year').value;
+            const vehicleColor = document.getElementById('vehicle-color').value;
+            const submitBtn = driverForm.querySelector('button[type="submit"]');
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Saving...';
+
+                const response = await fetch('https://web-production-7394a.up.railway.app/api/driver-profile/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        license_number: license,
+                        vehicle_make: vehicleMake,
+                        vehicle_model: vehicleModel,
+                        vehicle_plate: vehiclePlate,
+                        vehicle_year: vehicleYear,
+                        vehicle_color: vehicleColor
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Driver profile saved successfully!');
+                } else {
+                    alert(data.error || 'Failed to save driver profile.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Unable to connect to the server.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save Driver Details';
+            }
+        });
     }
 
     // Route Protection (Offer Ride)
