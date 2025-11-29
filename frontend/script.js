@@ -82,24 +82,101 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login Form Handling
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userEmail', email);
-            window.location.href = 'index.html';
+            const password = document.getElementById('password').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Signing In...';
+
+                const response = await fetch('http://127.0.0.1:8000/api/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', data.user.email);
+                    localStorage.setItem('userName', data.user.full_name);
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Unable to connect to the server. Please ensure the backend is running.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
         });
     }
 
     // Register Form Handling
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const fullName = document.getElementById('name').value;
             const email = document.getElementById('email').value;
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userEmail', email);
-            window.location.href = 'index.html';
+            let phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+
+            // Auto-prepend +91 if user didn't add a country code
+            if (phone && !phone.startsWith('+')) {
+                phone = '+91' + phone.trim();
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Creating Account...';
+
+                const response = await fetch('http://127.0.0.1:8000/api/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        email: email,
+                        phone_number: phone,
+                        password: password
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', data.user.email);
+                    localStorage.setItem('userName', data.user.full_name);
+                    alert('Account created successfully!');
+                    window.location.href = 'index.html';
+                } else {
+                    // Handle validation errors (which might be an object)
+                    let errorMessage = 'Registration failed.';
+                    if (data.email) errorMessage = data.email[0];
+                    else if (data.password) errorMessage = data.password[0];
+                    else if (data.message) errorMessage = data.message;
+
+                    alert(errorMessage);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Unable to connect to the server. Please ensure the backend is running.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
         });
     }
 
