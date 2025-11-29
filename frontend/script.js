@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const authButtonsContainer = document.getElementById('auth-buttons');
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const userEmail = localStorage.getItem('userEmail');
+    const userName = localStorage.getItem('userName');
+    const userPhone = localStorage.getItem('userPhone');
 
     // Update Header based on Auth State
     if (authButtonsContainer) {
@@ -10,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             authButtonsContainer.innerHTML = `
                 <div class="user-menu" style="display: flex; align-items: center; gap: 15px;">
                     <a href="profile.html" style="font-weight: 500; color: var(--text-color); display: flex; align-items: center; gap: 8px;">
-                        <span>Hello, ${userEmail ? userEmail.split('@')[0] : 'User'}</span>
+                        <span>Hello, ${userName || 'User'}</span>
                     </a>
                     <button id="logout-btn" class="btn btn-outline btn-sm">Sign Out</button>
                 </div>
@@ -19,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('logout-btn').addEventListener('click', () => {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userPhone');
                 window.location.href = 'index.html';
             });
         } else {
@@ -41,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 logoutBtn.addEventListener('click', () => {
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userPhone');
                     window.location.reload();
                 });
                 signInBtn.parentNode.insertBefore(logoutBtn, signInBtn.nextSibling);
@@ -57,7 +63,36 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const profileName = document.getElementById('profile-name');
             const profileEmail = document.getElementById('profile-email');
-            if (profileName && userEmail) profileName.textContent = userEmail.split('@')[0];
+            const profileFullnameInput = document.getElementById('profile-fullname');
+            const profilePhoneInput = document.getElementById('profile-phone');
+
+            if (profileName && userName) profileName.textContent = userName;
+            if (profileEmail && userEmail) profileEmail.textContent = userEmail;
+            if (profileFullnameInput && userName) profileFullnameInput.value = userName;
+            if (profilePhoneInput && userPhone) profilePhoneInput.value = userPhone;
+
+            const profileLogoutBtn = document.getElementById('profile-logout-btn');
+            if (profileLogoutBtn) {
+                profileLogoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userPhone');
+                    window.location.href = 'index.html';
+                });
+            }
+        }
+    }
+
+    // Driver Profile Page Logic
+    if (window.location.pathname.includes('driver-profile.html')) {
+        if (!isLoggedIn) {
+            window.location.href = 'login.html';
+        } else {
+            const profileName = document.getElementById('profile-name');
+            const profileEmail = document.getElementById('profile-email');
+
+            if (profileName && userName) profileName.textContent = userName;
             if (profileEmail && userEmail) profileEmail.textContent = userEmail;
 
             const profileLogoutBtn = document.getElementById('profile-logout-btn');
@@ -65,7 +100,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileLogoutBtn.addEventListener('click', () => {
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userPhone');
                     window.location.href = 'index.html';
+                });
+            }
+
+            // Driver Form Submission
+            const driverForm = document.getElementById('driver-form');
+            if (driverForm) {
+                driverForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const license = document.getElementById('license').value;
+                    const vehicleMake = document.getElementById('vehicle-make').value;
+                    const vehicleModel = document.getElementById('vehicle-model').value;
+                    const vehiclePlate = document.getElementById('vehicle-plate').value;
+                    const vehicleYear = document.getElementById('vehicle-year').value;
+                    const vehicleColor = document.getElementById('vehicle-color').value;
+                    const submitBtn = driverForm.querySelector('button[type="submit"]');
+
+                    try {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Saving...';
+
+                        const response = await fetch('https://web-production-7394a.up.railway.app/api/driver-profile/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                email: userEmail,
+                                license_number: license,
+                                vehicle_make: vehicleMake,
+                                vehicle_model: vehicleModel,
+                                vehicle_plate: vehiclePlate,
+                                vehicle_year: vehicleYear,
+                                vehicle_color: vehicleColor
+                            }),
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            alert('Driver profile saved successfully!');
+                        } else {
+                            alert(data.error || 'Failed to save driver profile.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Unable to connect to the server.');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Save Driver Details';
+                    }
                 });
             }
         }
@@ -106,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userEmail', data.user.email);
                     localStorage.setItem('userName', data.user.full_name);
+                    localStorage.setItem('userPhone', data.user.phone_number || '');
                     window.location.href = 'index.html';
                 } else {
                     alert(data.error || 'Login failed. Please check your credentials.');
@@ -159,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userEmail', data.user.email);
                     localStorage.setItem('userName', data.user.full_name);
+                    localStorage.setItem('userPhone', data.user.phone_number || '');
                     alert('Account created successfully!');
                     window.location.href = 'index.html';
                 } else {

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users
+from .models import Users, Drivers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +28,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+class DriverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Drivers
+        fields = ['license_number', 'vehicle_make', 'vehicle_model', 'vehicle_plate', 'vehicle_color', 'vehicle_year']

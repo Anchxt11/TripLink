@@ -8,6 +8,7 @@ urlpatterns = [
     # API Endpoints
     path('api/register/', api_views.register_api, name='api_register'),
     path('api/login/', api_views.login_api, name='api_login'),
+    path('api/driver-profile/', api_views.driver_profile_api, name='api_driver_profile'),
     
     # Frontend Views (Keep these for now if serving HTML from Django, 
     # but Netlify will use the API endpoints above)

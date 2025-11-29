@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - TripLink</title>
+    <title>Driver Profile - TripLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -66,9 +66,9 @@
                 <p id="profile-email" class="profile-email">user@example.com</p>
 
                 <div class="sidebar-menu" style="margin-top: 20px; width: 100%;">
-                    <a href="profile.html" class="btn btn-primary btn-block"
+                    <a href="profile.html" class="btn btn-outline btn-block"
                         style="margin-bottom: 10px; text-align: center;">My Profile</a>
-                    <a href="driver-profile.html" class="btn btn-outline btn-block"
+                    <a href="driver-profile.html" class="btn btn-primary btn-block"
                         style="margin-bottom: 10px; text-align: center;">Driver Profile</a>
                 </div>
 
@@ -79,86 +79,46 @@
 
         <main class="profile-content">
             <section class="profile-section">
-                <h3>Personal Information</h3>
-                <form class="profile-form">
+                <h3>Driver Information</h3>
+                <p class="section-subtitle">Manage your vehicle and license details to offer rides.</p>
+
+                <form id="driver-form" class="profile-form">
+                    <div class="form-group">
+                        <label for="license">Driving License Number</label>
+                        <input type="text" id="license" placeholder="DL-1420110012345" required>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" id="profile-fullname" value="John Doe" readonly>
+                            <label for="vehicle-make">Vehicle Make</label>
+                            <input type="text" id="vehicle-make" placeholder="Toyota" required>
                         </div>
                         <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="tel" id="profile-phone" value="+91 98765 43210" readonly>
+                            <label for="vehicle-model">Vehicle Model</label>
+                            <input type="text" id="vehicle-model" placeholder="Innova Crysta" required>
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicle-plate">License Plate Number</label>
+                            <input type="text" id="vehicle-plate" placeholder="MH 12 AB 1234" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle-year">Vehicle Year</label>
+                            <input type="number" id="vehicle-year" placeholder="2022" min="2000" max="2025" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label>Bio</label>
-                        <textarea rows="3"
-                            readonly>Frequent traveler between Mumbai and Pune. Love music and good conversations.</textarea>
+                        <label for="vehicle-color">Vehicle Color</label>
+                        <input type="text" id="vehicle-color" placeholder="White" required>
                     </div>
-                    <button type="button" class="btn btn-primary btn-sm">Edit Profile</button>
+
+                    <div class="form-actions" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary">Save Driver Details</button>
+                    </div>
                 </form>
-            </section>
-
-            <section class="profile-section">
-                <h3>My Trips</h3>
-                <div class="rides-list">
-                    <!-- Upcoming Trip -->
-                    <div class="ride-card horizontal">
-                        <div class="ride-main">
-                            <div class="ride-status badge-upcoming">Upcoming</div>
-                            <div class="ride-times">
-                                <div class="time-loc">
-                                    <span class="time">08:00</span>
-                                    <span class="city">Mumbai</span>
-                                </div>
-                                <div class="duration-line">
-                                    <span class="duration">3h 00m</span>
-                                    <div class="line"></div>
-                                </div>
-                                <div class="time-loc">
-                                    <span class="time">11:00</span>
-                                    <span class="city">Pune</span>
-                                </div>
-                            </div>
-                            <div class="driver-mini">
-                                <span>Driver: Rahul S.</span>
-                            </div>
-                        </div>
-                        <div class="ride-price-action">
-                            <span class="price-large">₹800</span>
-                            <button class="btn btn-outline btn-sm">View Ticket</button>
-                        </div>
-                    </div>
-
-                    <!-- Past Trip -->
-                    <div class="ride-card horizontal">
-                        <div class="ride-main">
-                            <div class="ride-status badge-completed">Completed</div>
-                            <div class="ride-times">
-                                <div class="time-loc">
-                                    <span class="time">17:00</span>
-                                    <span class="city">Pune</span>
-                                </div>
-                                <div class="duration-line">
-                                    <span class="duration">3h 15m</span>
-                                    <div class="line"></div>
-                                </div>
-                                <div class="time-loc">
-                                    <span class="time">20:15</span>
-                                    <span class="city">Mumbai</span>
-                                </div>
-                            </div>
-                            <div class="driver-mini">
-                                <span>Driver: Amit K.</span>
-                            </div>
-                        </div>
-                        <div class="ride-price-action">
-                            <span class="price-large">₹750</span>
-                            <button class="btn btn-outline btn-sm">Rate Driver</button>
-                        </div>
-                    </div>
-                </div>
             </section>
         </main>
     </div>
