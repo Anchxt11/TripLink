@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Profile Page Logic
-    // Ensure we don't run this on driver-profile.html (which contains "profile.html" in its name)
-    if (window.location.pathname.includes('profile.html') && !window.location.pathname.includes('driver-profile.html')) {
+    // Check for 'profile' but exclude 'driver-profile' to handle both .html and pretty URLs
+    if (window.location.pathname.includes('profile') && !window.location.pathname.includes('driver-profile')) {
         console.log('Detected Profile Page');
         if (!isLoggedIn) {
             window.location.href = 'login.html';
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Driver Profile Page Logic
-    if (window.location.pathname.includes('driver-profile.html')) {
+    if (window.location.pathname.includes('driver-profile')) {
         console.log('Detected Driver Profile Page');
         if (!isLoggedIn) {
             window.location.href = 'login.html';
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Route Protection (Offer Ride)
-    if (window.location.pathname.includes('offer-ride.html')) {
+    if (window.location.pathname.includes('offer-ride')) {
         if (!isLoggedIn) {
             alert('You must be signed in to offer a ride.');
             window.location.href = 'login.html';
