@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Profile Page Logic
-    if (window.location.pathname.includes('profile.html')) {
+    // Ensure we don't run this on driver-profile.html (which contains "profile.html" in its name)
+    if (window.location.pathname.includes('profile.html') && !window.location.pathname.includes('driver-profile.html')) {
+        console.log('Detected Profile Page');
         if (!isLoggedIn) {
             window.location.href = 'login.html';
         } else {
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Driver Profile Page Logic
     if (window.location.pathname.includes('driver-profile.html')) {
+        console.log('Detected Driver Profile Page');
         if (!isLoggedIn) {
             window.location.href = 'login.html';
         } else {
@@ -111,7 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Driver Form Submission (Global Listener)
     const driverForm = document.getElementById('driver-form');
     if (driverForm) {
+        console.log('Driver form found, attaching listener');
         driverForm.addEventListener('submit', async (e) => {
+            console.log('Driver form submitted');
             e.preventDefault();
 
             const license = document.getElementById('license').value;
