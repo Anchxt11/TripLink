@@ -38,8 +38,21 @@ def login_api(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def driver_profile_api(request):
+    if request.method == 'GET':
+        email = request.query_params.get('email')
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = Users.objects.get(email=email)
+            driver = Drivers.objects.get(user=user)
+            serializer = DriverSerializer(driver)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except (Users.DoesNotExist, Drivers.DoesNotExist):
+            return Response({"error": "Driver profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # POST Request logic
     email = request.data.get('email')
     if not email:
         return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -49,27 +62,16 @@ def driver_profile_api(request):
     except Users.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    try:
-        driver = Drivers.objects.get(user=user)
-        serializer = DriverSerializer(driver, data=request.data, partial=True)
-    except Drivers.DoesNotExist:
-        # Create new driver profile
-        # We need to pass the user instance manually since it's not in the request data
-        serializer = DriverSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({
-                "message": "Driver profile created successfully",
-                "driver": serializer.data
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if Drivers.objects.filter(user=user).exists():
+        return Response({"error": "Driver profile already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
+    serializer = DriverSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user=user)
         return Response({
-            "message": "Driver profile updated successfully",
+            "message": "Driver profile created successfully",
             "driver": serializer.data
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])

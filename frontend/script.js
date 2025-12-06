@@ -98,6 +98,39 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profileName && userName) profileName.textContent = userName;
             if (profileEmail && userEmail) profileEmail.textContent = userEmail;
 
+            // Fetch existing driver profile
+            const fetchDriverProfile = async () => {
+                const displayDiv = document.getElementById('driver-details-display');
+                const form = document.getElementById('driver-form');
+
+                try {
+                    const res = await fetch(`https://web-production-7394a.up.railway.app/api/driver-profile/?email=${userEmail}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        // Hide form, show display
+                        if (form) form.style.display = 'none';
+                        if (displayDiv) {
+                            displayDiv.style.display = 'block';
+                            document.getElementById('display-license').textContent = data.license_number;
+                            document.getElementById('display-make').textContent = data.vehicle_make;
+                            document.getElementById('display-model').textContent = data.vehicle_model;
+                            document.getElementById('display-plate').textContent = data.vehicle_plate;
+                            document.getElementById('display-year').textContent = data.vehicle_year;
+                            document.getElementById('display-color').textContent = data.vehicle_color;
+                        }
+                    } else {
+                        // Show form, hide display
+                        if (form) form.style.display = 'block';
+                        if (displayDiv) displayDiv.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error fetching driver profile:', error);
+                    // Default to showing form on error (or handle gracefully)
+                    if (form) form.style.display = 'block';
+                }
+            };
+            fetchDriverProfile();
+
             const profileLogoutBtn = document.getElementById('profile-logout-btn');
             if (profileLogoutBtn) {
                 profileLogoutBtn.addEventListener('click', () => {
@@ -151,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     alert('Driver profile saved successfully!');
+                    window.location.reload();
                 } else {
                     alert(data.error || 'Failed to save driver profile.');
                 }

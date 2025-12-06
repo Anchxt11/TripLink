@@ -20,9 +20,11 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
                     <li><a href="find-ride.html" class="nav-link">Find Ride</a></li>
                     <li><a href="offer-ride.html" class="nav-link">Offer Ride</a></li>
-                    <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#my-trips" class="nav-link" id="nav-my-trips">My Trips</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
@@ -81,6 +83,38 @@
             <section class="profile-section">
                 <h3>Driver Information</h3>
                 <p class="section-subtitle">Manage your vehicle and license details to offer rides.</p>
+
+                <div id="driver-details-display"
+                    style="display: none; background: var(--surface-color); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div class="detail-row" style="margin-bottom: 15px;">
+                        <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">Driving License</h4>
+                        <p id="display-license" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                        <div>
+                            <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">Vehicle Make</h4>
+                            <p id="display-make" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">Vehicle Model</h4>
+                            <p id="display-model" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                        <div>
+                            <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">License Plate</h4>
+                            <p id="display-plate" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">Year</h4>
+                            <p id="display-year" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <h4 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">Color</h4>
+                        <p id="display-color" style="margin: 5px 0 0; font-weight: 500; font-size: 1.1rem;"></p>
+                    </div>
+                </div>
 
                 <form id="driver-form" class="profile-form">
                     <div class="form-group">
