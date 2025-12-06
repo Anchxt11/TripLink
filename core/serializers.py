@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, Drivers
+from .models import Users, Drivers, Rides
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +33,11 @@ class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drivers
         fields = ['license_number', 'vehicle_make', 'vehicle_model', 'vehicle_plate', 'vehicle_color', 'vehicle_year']
+
+class RideSerializer(serializers.ModelSerializer):
+    driver_name = serializers.CharField(source='driver.full_name', read_only=True)
+    
+    class Meta:
+        model = Rides
+        fields = ['id', 'driver', 'driver_name', 'origin', 'destination', 'departure_date', 'departure_time', 'price', 'seats_available', 'description']
+        read_only_fields = ['driver']

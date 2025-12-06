@@ -291,10 +291,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // Offer Ride Form Handling
     const offerRideForm = document.getElementById('offer-ride-form');
     if (offerRideForm) {
-        offerRideForm.addEventListener('submit', (e) => {
+        offerRideForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Ride published successfully!');
-            window.location.href = 'find-ride.html';
+
+            const origin = document.getElementById('origin').value;
+            const destination = document.getElementById('destination').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const price = document.getElementById('price').value;
+            const seats = document.getElementById('seats').value;
+            const details = document.getElementById('details').value;
+            const submitBtn = offerRideForm.querySelector('button[type="submit"]');
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Publishing...';
+
+                const response = await fetch('https://web-production-7394a.up.railway.app/api/offer-ride/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        origin: origin,
+                        destination: destination,
+                        departure_date: date,
+                        departure_time: time,
+                        price: price,
+                        seats_available: seats,
+                        description: details
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Ride published successfully!');
+                    window.location.href = 'find-ride.html';
+                } else {
+                    alert(data.error || 'Failed to publish ride.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Unable to connect to the server.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Publish Ride';
+            }
         });
     }
 
@@ -375,5 +419,129 @@ document.addEventListener('DOMContentLoaded', () => {
                 header.style.boxShadow = 'none';
             }
         });
+    }
+
+    // Find Ride Page Logic
+    const searchBtn = document.getElementById('search-btn');
+    if (searchBtn || window.location.pathname.includes('find-ride')) {
+        const loadRides = async () => {
+            const origin = document.getElementById('search-from')?.value || '';
+            const destination = document.getElementById('search-to')?.value || '';
+            const date = document.getElementById('search-date')?.value || '';
+            const ridesList = document.querySelector('.rides-list');
+
+            if (!ridesList) return;
+
+            // Clear existing mock data (except header)
+            const header = ridesList.querySelector('.search-header');
+            ridesList.innerHTML = '';
+            if (header) ridesList.appendChild(header);
+
+            // Update header text
+            if (header) {
+                const title = header.querySelector('h1');
+                const subtitle = header.querySelector('p');
+                if (title) title.textContent = origin && destination ? `${origin} to ${destination}` : 'Available Rides';
+                if (subtitle) subtitle.textContent = 'Loading rides...';
+            }
+
+            try {
+                // Build query string
+                const params = new URLSearchParams();
+                if (origin) params.append('origin', origin);
+                if (destination) params.append('destination', destination);
+                if (date) params.append('date', date);
+
+                const response = await fetch(`https://web-production-7394a.up.railway.app/api/find-ride/?${params.toString()}`);
+                const rides = await response.json();
+
+                if (header) {
+                    const subtitle = header.querySelector('p');
+                    if (subtitle) subtitle.textContent = `${rides.length} rides available`;
+                }
+
+                if (rides.length === 0) {
+                    const noRidesMsg = document.createElement('div');
+                    noRidesMsg.style.textAlign = 'center';
+                    noRidesMsg.style.padding = '40px';
+                    noRidesMsg.style.color = 'var(--text-light)';
+                    noRidesMsg.innerHTML = '<p>No rides found matching your criteria.</p>';
+                    ridesList.appendChild(noRidesMsg);
+                    return;
+                }
+
+                rides.forEach(ride => {
+                    const card = document.createElement('div');
+                    card.className = 'ride-card horizontal';
+
+                    // Calculate duration (mock logic for now as we don't have arrival time)
+                    const duration = '3h 00m';
+
+                    card.innerHTML = `
+                        <div class="ride-main">
+                            <div class="ride-header">
+                                <div class="driver-info">
+                                    <div class="driver-avatar"></div>
+                                    <div>
+                                        <h4>${ride.driver_name || 'Driver'}</h4>
+                                    </div>
+                                </div>
+                                <span class="seats-badge">${ride.seats_available} seats left</span>
+                            </div>
+                            
+                            <div class="ride-times">
+                                <div class="time-loc">
+                                    <span class="time">${ride.departure_time.slice(0, 5)}</span>
+                                    <span class="city">${ride.origin}</span>
+                                </div>
+                                <div class="duration-line">
+                                    <span class="duration">${duration}</span>
+                                    <div class="line"></div>
+                                </div>
+                                <div class="time-loc">
+                                    <span class="time">--:--</span>
+                                    <span class="city">${ride.destination}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ride-price-action">
+                            <span class="price-large">₹${ride.price}</span>
+                            <button class="btn btn-primary book-btn">Book Seat</button>
+                        </div>
+                    `;
+                    ridesList.appendChild(card);
+                });
+
+                // Re-attach book button listeners
+                const newBookBtns = document.querySelectorAll('.book-btn');
+                newBookBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (!isLoggedIn) {
+                            alert('Please sign in to book a ride.');
+                            window.location.href = 'login.html';
+                        } else {
+                            alert('Booking feature coming soon!');
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error fetching rides:', error);
+                if (header) {
+                    const subtitle = header.querySelector('p');
+                    if (subtitle) subtitle.textContent = 'Error loading rides.';
+                }
+            }
+        };
+
+        if (searchBtn) {
+            searchBtn.addEventListener('click', loadRides);
+        }
+
+        // Initial load if on find-ride page
+        if (window.location.pathname.includes('find-ride')) {
+            // Wait a bit for DOM to be fully ready if needed, or just call it
+            loadRides();
+        }
     }
 });
