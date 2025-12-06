@@ -33,7 +33,7 @@
 
         .page-container-custom {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 1fr;
             gap: 40px;
             padding-bottom: 60px;
         }
@@ -129,37 +129,8 @@
         <!-- Main Content Grid -->
         <div class="page-container-custom">
             <!-- Sidebar Filters -->
-            <aside class="filters-sidebar">
-                <h3>Filters</h3>
-
-                <div class="filter-group">
-                    <label>Sort By</label>
-                    <select>
-                        <option>Earliest Departure</option>
-                        <option>Lowest Price</option>
-                        <option>Highest Rating</option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label>Departure Time</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox"> Before 06:00</label>
-                        <label><input type="checkbox" checked> 06:00 - 12:00</label>
-                        <label><input type="checkbox"> 12:00 - 18:00</label>
-                        <label><input type="checkbox"> After 18:00</label>
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <label>Price Range</label>
-                    <input type="range" min="0" max="2000" value="1000" style="width: 100%;">
-                    <div class="range-labels">
-                        <span>₹0</span>
-                        <span>₹2000</span>
-                    </div>
-                </div>
-            </aside>
+            <!-- Sidebar Filters Removed -->
+            <!-- <aside class="filters-sidebar"> ... </aside> -->
 
             <!-- Results List -->
             <main class="rides-list">
