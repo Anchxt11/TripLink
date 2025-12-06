@@ -83,11 +83,11 @@ def offer_ride_api(request):
     except Users.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    # Check if user is a driver (optional, but good for data integrity)
-    # try:
-    #     driver = Drivers.objects.get(user=user)
-    # except Drivers.DoesNotExist:
-    #     return Response({"error": "You must create a driver profile first"}, status=status.HTTP_403_FORBIDDEN)
+    # Check if user is a driver
+    try:
+        driver = Drivers.objects.get(user=user)
+    except Drivers.DoesNotExist:
+        return Response({"error": "You must create a driver profile first"}, status=status.HTTP_403_FORBIDDEN)
 
     serializer = RideSerializer(data=request.data)
     if serializer.is_valid():

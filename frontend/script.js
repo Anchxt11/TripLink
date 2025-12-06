@@ -330,7 +330,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Ride published successfully!');
                     window.location.href = 'find-ride.html';
                 } else {
-                    alert(data.error || 'Failed to publish ride.');
+                    if (data.error === "You must create a driver profile first") {
+                        if (confirm('You must create a driver profile before offering a ride. Go to Driver Profile page now?')) {
+                            window.location.href = 'driver-profile.html';
+                        }
+                    } else {
+                        alert(data.error || 'Failed to publish ride.');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
