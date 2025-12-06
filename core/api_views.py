@@ -105,13 +105,19 @@ def find_ride_api(request):
     date = request.query_params.get('date')
 
     rides = Rides.objects.all()
+    print(f"DEBUG: Initial count: {rides.count()}")
 
     if origin:
+        print(f"DEBUG: Filtering by origin: {origin}")
         rides = rides.filter(origin__icontains=origin)
     if destination:
+        print(f"DEBUG: Filtering by destination: {destination}")
         rides = rides.filter(destination__icontains=destination)
     if date:
+        print(f"DEBUG: Filtering by date: {date}")
         rides = rides.filter(departure_date=date)
+    
+    print(f"DEBUG: Final count: {rides.count()}")
 
     # Order by date and time
     rides = rides.order_by('departure_date', 'departure_time')

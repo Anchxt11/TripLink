@@ -458,7 +458,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (destination) params.append('destination', destination);
                 if (date) params.append('date', date);
 
-                const response = await fetch(`https://web-production-7394a.up.railway.app/api/find-ride/?${params.toString()}`);
+                const fetchUrl = `https://web-production-7394a.up.railway.app/api/find-ride/?${params.toString()}`;
+                console.log('Fetching rides from:', fetchUrl);
+                console.log('Params:', { origin, destination, date });
+
+                const response = await fetch(fetchUrl);
                 const rides = await response.json();
 
                 if (header) {
