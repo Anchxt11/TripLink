@@ -334,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const time = document.getElementById('time').value;
             const price = document.getElementById('price').value;
             const seats = document.getElementById('seats').value;
-            const details = document.getElementById('details').value;
             const submitBtn = offerRideForm.querySelector('button[type="submit"]');
 
             try {
@@ -353,8 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         departure_date: date,
                         departure_time: time,
                         price: price,
-                        seats_available: seats,
-                        description: details
+                        seats_available: seats
                     }),
                 });
 

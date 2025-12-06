@@ -34,7 +34,6 @@ class Rides(models.Model):
     departure_time = models.TimeField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     seats_available = models.IntegerField()
-    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
