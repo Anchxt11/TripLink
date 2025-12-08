@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="ride-price-action">
                             <span class="price-large">₹${ride.price}</span>
-                            <button class="btn btn-primary book-btn">Book Seat</button>
+                            <button class="btn btn-primary book-btn" data-ride-id="${ride.id}">Book Seat</button>
                         </div>
                     `;
                     ridesList.appendChild(card);
@@ -557,12 +557,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Re-attach book button listeners
                 const newBookBtns = document.querySelectorAll('.book-btn');
                 newBookBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
+                    btn.addEventListener('click', async () => {
                         if (!isLoggedIn) {
                             alert('Please sign in to book a ride.');
                             window.location.href = 'login.html';
                         } else {
-                            alert('Booking feature coming soon!');
+                            const rideId = btn.getAttribute('data-ride-id');
+                            const seats = prompt('How many seats would you like to book?', '1');
+
+                            if (seats && !isNaN(seats) && parseInt(seats) > 0) {
+                                try {
+                                    btn.disabled = true;
+                                    btn.textContent = 'Booking...';
+
+                                    const response = await fetch('https://web-production-7394a.up.railway.app/api/book-ride/', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            passenger_email: userEmail,
+                                            ride_id: rideId,
+                                            seats_booked: parseInt(seats)
+                                        }),
+                                    });
+
+                                    const data = await response.json();
+
+                                    if (response.ok) {
+                                        alert('Ride booked successfully!');
+                                        // Refresh the list to show updated seat counts
+                                        loadRides();
+                                    } else {
+                                        alert(data.error || 'Failed to book ride.');
+                                        btn.disabled = false;
+                                        btn.textContent = 'Book Seat';
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    alert('Unable to connect to the server.');
+                                    btn.disabled = false;
+                                    btn.textContent = 'Book Seat';
+                                }
+                            }
                         }
                     });
                 });
