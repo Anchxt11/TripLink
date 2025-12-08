@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offer a Ride - TripLink</title>
+    <title>My Trips - TripLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -23,8 +23,8 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
                     <li><a href="find-ride.html" class="nav-link">Find Ride</a></li>
-                    <li><a href="offer-ride.html" class="nav-link active">Offer Ride</a></li>
-                    <li><a href="my-trips.html" class="nav-link" id="nav-my-trips">My Trips</a></li>
+                    <li><a href="offer-ride.html" class="nav-link">Offer Ride</a></li>
+                    <li><a href="my-trips.html" class="nav-link active">My Trips</a></li>
                     <li><a href="profile.html" class="nav-link">Profile</a></li>
                 </ul>
             </nav>
@@ -53,64 +53,40 @@
                     <!-- Injected by JS -->
                 </div>
                 <button class="mobile-menu-btn" aria-label="Toggle Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </button>
             </div>
         </div>
     </header>
 
-    <div class="container page-container">
-        <div class="offer-ride-card">
-            <h1 class="section-title" style="text-align: left; margin-bottom: 30px;">Offer a Ride</h1>
-            <form id="offer-ride-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="origin">Pick-up Location</label>
-                        <input type="text" id="origin" placeholder="e.g. Mumbai" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="destination">Drop-off Location</label>
-                        <input type="text" id="destination" placeholder="e.g. Pune" required>
-                    </div>
+    <main class="page-container section" style="padding-top: 120px;">
+        <div class="container trips-container">
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h1 style="font-family: var(--font-headings); font-size: 2.5rem; color: var(--text-color);">My Trips
+                </h1>
+                <p style="color: var(--text-light);">Manage your booked and offered rides</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="booked">Booked Rides</button>
+                <button class="tab-btn" data-tab="offered">Offered Rides</button>
+            </div>
+
+            <div class="tab-content active" id="booked-rides">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading your trips...</p>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="date">Date</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="time">Departure Time</label>
-                        <input type="time" id="time" required>
-                    </div>
+            <div class="tab-content" id="offered-rides" style="display: none;">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading your offers...</p>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="price">Price per Seat (₹)</label>
-                        <input type="number" id="price" placeholder="e.g. 800" min="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="seats">Seats Available</label>
-                        <select id="seats" required>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3" selected>3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                        </select>
-                    </div>
-                </div>
-
-
-
-                <button type="submit" class="btn btn-primary btn-block">Publish Ride</button>
-            </form>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

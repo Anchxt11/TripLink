@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Users, Drivers, Rides
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, DriverSerializer, RideSerializer
+from .models import Users, Drivers, Rides, Bookings
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, DriverSerializer, RideSerializer, BookingSerializer
 from datetime import datetime
 
 @api_view(['POST'])
@@ -126,3 +126,69 @@ def find_ride_api(request):
 
     serializer = RideSerializer(rides, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def book_ride_api(request):
+    serializer = BookingSerializer(data=request.data)
+    if serializer.is_valid():
+        passenger_email = serializer.validated_data['passenger_email']
+        ride_id = serializer.validated_data['ride_id']
+        seats_to_book = serializer.validated_data['seats_booked']
+
+        try:
+            user = Users.objects.get(email=passenger_email)
+        except Users.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            ride = Rides.objects.get(id=ride_id)
+        except Rides.DoesNotExist:
+            return Response({"error": "Ride not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if ride.seats_available < seats_to_book:
+            return Response({"error": "Not enough seats available"}, status=status.HTTP_400_BAD_REQUEST)
+
+        booking = Bookings.objects.create(
+            ride=ride,
+            passenger=user,
+            seats_booked=seats_to_book,
+            booking_status='confirmed'
+        )
+
+        ride.seats_available -= seats_to_book
+        ride.save()
+
+        return Response({
+            "message": "Ride booked successfully",
+            "booking_id": booking.id,
+            "ride_details": {
+                "origin": ride.origin,
+                "destination": ride.destination,
+                "date": ride.departure_date,
+                "time": ride.departure_time
+            }
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def my_trips_api(request):
+    email = request.query_params.get('email')
+    if not email:
+        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        user = Users.objects.get(email=email)
+    except Users.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    bookings = Bookings.objects.filter(passenger=user).order_by('-created_at')
+    booked_serializer = BookingSerializer(bookings, many=True)
+
+    offered_rides = Rides.objects.filter(driver=user).order_by('-departure_date')
+    offered_serializer = RideSerializer(offered_rides, many=True)
+
+    return Response({
+        "booked": booked_serializer.data,
+        "offered": offered_serializer.data
+    }, status=status.HTTP_200_OK)

@@ -586,4 +586,116 @@ document.addEventListener('DOMContentLoaded', () => {
             loadRides();
         }
     }
+    // My Trips Page Logic
+    if (window.location.pathname.includes('my-trips')) {
+        console.log('Detected My Trips Page');
+        if (!isLoggedIn) {
+            window.location.href = 'login.html';
+        } else {
+            loadMyTrips();
+        }
+
+        // Tab Switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => {
+                    c.style.display = 'none';
+                    c.classList.remove('active');
+                });
+
+                // Add active to clicked
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                const targetContent = document.getElementById(tabId + '-rides');
+                if (targetContent) {
+                    targetContent.style.display = 'block';
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    }
+
+    async function loadMyTrips() {
+        const bookedContainer = document.getElementById('booked-rides');
+        const offeredContainer = document.getElementById('offered-rides');
+        const API_BASE = 'https://web-production-7394a.up.railway.app';
+
+        try {
+            const response = await fetch(`${API_BASE}/api/my-trips/?email=${userEmail}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                renderBookedRides(data.booked, bookedContainer);
+                renderOfferedRides(data.offered, offeredContainer);
+            } else {
+                bookedContainer.innerHTML = '<p class="error">Failed to load trips.</p>';
+                offeredContainer.innerHTML = '<p class="error">Failed to load offers.</p>';
+            }
+        } catch (error) {
+            console.error('Error loading my trips:', error);
+            bookedContainer.innerHTML = '<p class="error">Error connecting to server.</p>';
+        }
+    }
+
+    function renderBookedRides(rides, container) {
+        if (!rides || rides.length === 0) {
+            container.innerHTML = '<div class="no-rides">You haven\'t booked any rides yet.</div>';
+            return;
+        }
+
+        container.innerHTML = rides.map(booking => {
+            const ride = booking.ride; // Nested ride details
+            const date = new Date(booking.created_at).toLocaleDateString();
+
+            // Handle null ride (if deleted)
+            if (!ride) {
+                return `
+                <div class="ride-card">
+                    <p>Ride details unavailable (Ride may have been cancelled)</p>
+                </div>`;
+            }
+
+            return `
+            <div class="ride-card">
+                <div class="ride-header" style="justify-content: space-between; display: flex; margin-bottom: 10px;">
+                    <span class="date" style="color: var(--text-light); font-size: 0.9rem;">Booked on ${date}</span>
+                    <span class="status-badge ${booking.booking_status}" style="background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; text-transform: capitalize;">${booking.booking_status || 'Confirmed'}</span>
+                </div>
+                <div class="ride-details">
+                    <h3 style="margin-bottom: 5px; color: var(--text-color);">${ride.origin} <i class="fas fa-arrow-right" style="color: var(--primary-color);"></i> ${ride.destination}</h3>
+                    <p style="margin: 2px 0; color: var(--text-light);"><i class="far fa-calendar"></i> ${ride.departure_date} &bull; <i class="far fa-clock"></i> ${ride.departure_time}</p>
+                    <p style="margin-top: 5px; font-weight: 500;">Seats: ${booking.seats_booked}</p>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    function renderOfferedRides(rides, container) {
+        if (!rides || rides.length === 0) {
+            container.innerHTML = '<div class="no-rides">You haven\'t offered any rides yet.</div>';
+            return;
+        }
+
+        container.innerHTML = rides.map(ride => {
+            return `
+            <div class="ride-card">
+                <div class="ride-header" style="justify-content: space-between; display: flex; margin-bottom: 10px;">
+                    <span class="date" style="color: var(--text-light); font-size: 0.9rem;">Departure: ${ride.departure_date}</span>
+                    <span class="seats" style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">${ride.seats_available} seats left</span>
+                </div>
+                <div class="ride-details">
+                    <h3 style="margin-bottom: 5px; color: var(--text-color);">${ride.origin} <i class="fas fa-arrow-right" style="color: var(--primary-color);"></i> ${ride.destination}</h3>
+                    <p style="margin: 2px 0; color: var(--text-light);"><i class="far fa-clock"></i> ${ride.departure_time}</p>
+                    <p style="margin-top: 5px; font-weight: 500; color: var(--text-color);">₹${ride.price}</p>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
 });

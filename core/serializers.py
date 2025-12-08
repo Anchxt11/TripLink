@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, Drivers, Rides
+from .models import Users, Drivers, Rides, Bookings 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,3 +41,14 @@ class RideSerializer(serializers.ModelSerializer):
         model = Rides
         fields = ['id', 'driver', 'driver_name', 'origin', 'destination', 'departure_date', 'departure_time', 'price', 'seats_available']
         read_only_fields = ['driver']
+
+class BookingSerializer(serializers.ModelSerializer):
+    passenger_email = serializers.EmailField(write_only=True)
+    ride_id = serializers.IntegerField(write_only=True)
+    booking_status = serializers.CharField(read_only=True)
+    ride = RideSerializer(read_only=True)
+
+    class Meta:
+        model = Bookings
+        fields = ['id', 'ride_id', 'ride', 'passenger_email', 'seats_booked', 'booking_status', 'created_at']
+
