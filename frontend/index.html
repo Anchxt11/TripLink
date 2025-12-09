@@ -72,31 +72,14 @@
                 <h1 class="hero-title">Share Rides. Save Money. <br>Travel Smarter.</h1>
                 <p class="hero-subtitle">Connect with verified carpoolers and enjoy stress-free commuting.</p>
             </div>
-            <div class="hero-search-card">
-                <form class="search-form">
-                    <div class="form-group">
-                        <label for="from">From</label>
-                        <input type="text" id="from" placeholder="City or address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="to">To</label>
-                        <input type="text" id="to" placeholder="City or address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="date">Date</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="passengers">Passengers</label>
-                        <select id="passengers">
-                            <option value="1">1 Passenger</option>
-                            <option value="2">2 Passengers</option>
-                            <option value="3">3 Passengers</option>
-                            <option value="4">4+ Passengers</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Find Ride</button>
-                </form>
+            <div class="hero-search-card"
+                style="display: flex; align-items: center; justify-content: center; text-align: center; min-height: 300px;">
+                <div id="home-welcome-msg-container">
+                    <h2 id="home-welcome-text"
+                        style="font-family: var(--font-headings); font-size: 3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
+                        Welcome</h2>
+                    <p style="font-size: 1.2rem; color: var(--text-light);">Find your perfect ride today.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -125,100 +108,9 @@
         </div>
     </section>
 
-    <!-- Featured Rides -->
-    <section id="featured-rides" class="section featured-rides">
-        <div class="container">
-            <h2 class="section-title">Featured Rides</h2>
-            <div class="rides-grid">
-                <!-- Ride Card 1 -->
-                <div class="ride-card">
-                    <div class="ride-header">
-                        <div class="driver-info">
-                            <div class="driver-avatar"></div>
-                            <div>
-                                <h4>Sarah M.</h4>
-                                <span class="rating">★ 4.9</span>
-                            </div>
-                        </div>
-                        <span class="price">₹1200</span>
-                    </div>
-                    <div class="ride-route">
-                        <div class="route-point">
-                            <span class="time">09:00 AM</span>
-                            <span class="location">San Francisco</span>
-                        </div>
-                        <div class="route-line"></div>
-                        <div class="route-point">
-                            <span class="time">10:30 AM</span>
-                            <span class="location">San Jose</span>
-                        </div>
-                    </div>
-                    <div class="ride-footer">
-                        <span class="seats">2 seats left</span>
-                        <button class="btn btn-outline btn-sm">View Details</button>
-                    </div>
-                </div>
-                <!-- Ride Card 2 -->
-                <div class="ride-card">
-                    <div class="ride-header">
-                        <div class="driver-info">
-                            <div class="driver-avatar"></div>
-                            <div>
-                                <h4>David K.</h4>
-                                <span class="rating">★ 4.8</span>
-                            </div>
-                        </div>
-                        <span class="price">₹1800</span>
-                    </div>
-                    <div class="ride-route">
-                        <div class="route-point">
-                            <span class="time">08:00 AM</span>
-                            <span class="location">Los Angeles</span>
-                        </div>
-                        <div class="route-line"></div>
-                        <div class="route-point">
-                            <span class="time">11:00 AM</span>
-                            <span class="location">San Diego</span>
-                        </div>
-                    </div>
-                    <div class="ride-footer">
-                        <span class="seats">3 seats left</span>
-                        <button class="btn btn-outline btn-sm">View Details</button>
-                    </div>
-                </div>
-                <!-- Ride Card 3 -->
-                <div class="ride-card">
-                    <div class="ride-header">
-                        <div class="driver-info">
-                            <div class="driver-avatar"></div>
-                            <div>
-                                <h4>Emily R.</h4>
-                                <span class="rating">★ 5.0</span>
-                            </div>
-                        </div>
-                        <span class="price">₹950</span>
-                    </div>
-                    <div class="ride-route">
-                        <div class="route-point">
-                            <span class="time">05:30 PM</span>
-                            <span class="location">Seattle</span>
-                        </div>
-                        <div class="route-line"></div>
-                        <div class="route-point">
-                            <span class="time">06:15 PM</span>
-                            <span class="location">Bellevue</span>
-                        </div>
-                    </div>
-                    <div class="ride-footer">
-                        <span class="seats">1 seat left</span>
-                        <button class="btn btn-outline btn-sm">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Why Choose TripLink section removed -->
+
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -227,7 +119,7 @@
                 <a href="#" class="logo">TripLink</a>
                 <p>Connecting people, places, and possibilities. Join the movement for smarter travel.</p>
             </div>
-            <!-- Quick Links removed -->
+
             <div class="footer-contact">
                 <h4>Contact</h4>
                 <p>ridewithtriplink@gmail.com</p>
@@ -236,7 +128,7 @@
                 </div>
             </div>
         </div>
-        <!-- Footer bottom removed -->
+
     </footer>
 
     <script src="script.js"></script>

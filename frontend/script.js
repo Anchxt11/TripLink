@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const userPhone = localStorage.getItem('userPhone');
 
     // Update Header based on Auth State
+    if (isLoggedIn) {
+        // Update Home Page Welcome Message
+        const homeWelcomeText = document.getElementById('home-welcome-text');
+        if (homeWelcomeText) {
+            homeWelcomeText.innerHTML = `Welcome,<br>${userName || 'User'}`;
+        }
+    }
+
     if (authButtonsContainer) {
         if (isLoggedIn) {
             authButtonsContainer.innerHTML = `
@@ -17,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button id="logout-btn" class="btn btn-outline btn-sm">Sign Out</button>
                 </div>
             `;
+
+
+
             // Add Logout Listener
             document.getElementById('logout-btn').addEventListener('click', () => {
                 localStorage.removeItem('isLoggedIn');
@@ -59,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Profile Page Logic
     // Check for 'profile' but exclude 'driver-profile' to handle both .html and pretty URLs
     if (window.location.pathname.includes('profile') && !window.location.pathname.includes('driver-profile')) {
-        console.log('Detected Profile Page');
+
         if (!isLoggedIn) {
             window.location.href = 'login.html';
         } else {
@@ -88,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Driver Profile Page Logic
     if (window.location.pathname.includes('driver-profile')) {
-        console.log('Detected Driver Profile Page');
+
         if (!isLoggedIn) {
             window.location.href = 'login.html';
         } else {
@@ -147,9 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Driver Form Submission (Global Listener)
     const driverForm = document.getElementById('driver-form');
     if (driverForm) {
-        console.log('Driver form found, attaching listener');
+
         driverForm.addEventListener('submit', async (e) => {
-            console.log('Driver form submitted');
+
             e.preventDefault();
 
             const license = document.getElementById('license').value;
@@ -491,8 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (date) params.append('date', date);
 
                 const fetchUrl = `https://web-production-7394a.up.railway.app/api/find-ride/?${params.toString()}`;
-                console.log('Fetching rides from:', fetchUrl);
-                console.log('Params:', { origin, destination, date });
+
 
                 const response = await fetch(fetchUrl);
                 const rides = await response.json();
@@ -541,7 +551,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="line"></div>
                                 </div>
                                 <div class="time-loc">
-                                    <span class="time">--:--</span>
                                     <span class="city">${ride.destination}</span>
                                 </div>
                             </div>
@@ -625,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // My Trips Page Logic
     if (window.location.pathname.includes('my-trips')) {
-        console.log('Detected My Trips Page');
+
         if (!isLoggedIn) {
             window.location.href = 'login.html';
         } else {
@@ -698,15 +707,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             return `
-            <div class="ride-card">
-                <div class="ride-header" style="justify-content: space-between; display: flex; margin-bottom: 10px;">
-                    <span class="date" style="color: var(--text-light); font-size: 0.9rem;">Booked on ${date}</span>
-                    <span class="status-badge ${booking.booking_status}" style="background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; text-transform: capitalize;">${booking.booking_status || 'Confirmed'}</span>
+            <div class="ride-card horizontal">
+                <div class="ride-main">
+                    <div class="ride-header" style="margin-bottom: 15px;">
+                         <span class="date" style="color: var(--text-light); font-size: 0.85rem;"><i class="far fa-calendar-check"></i> Booked on ${date}</span>
+                         <span class="status-badge" style="background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 12px;">${booking.booking_status || 'Confirmed'}</span>
+                    </div>
+                    
+                    <div class="ride-times">
+                        <div class="time-loc">
+                            <span class="time">${ride.departure_time.slice(0, 5)}</span>
+                            <span class="city">${ride.origin}</span>
+                        </div>
+                        <div class="duration-line">
+                            <span class="duration" style="background: var(--background-color); padding: 0 10px; color: var(--text-light); font-size: 0.8rem;">${ride.departure_date}</span>
+                            <div class="line"></div>
+                        </div>
+                        <div class="time-loc">
+                            <span class="city">${ride.destination}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="ride-details">
-                    <h3 style="margin-bottom: 5px; color: var(--text-color);">${ride.origin} <i class="fas fa-arrow-right" style="color: var(--primary-color);"></i> ${ride.destination}</h3>
-                    <p style="margin: 2px 0; color: var(--text-light);"><i class="far fa-calendar"></i> ${ride.departure_date} &bull; <i class="far fa-clock"></i> ${ride.departure_time}</p>
-                    <p style="margin-top: 5px; font-weight: 500;">Seats: ${booking.seats_booked}</p>
+                
+                <div class="ride-price-action" style="display: flex; flex-direction: column; align-items: flex-end; min-width: 120px; padding-left: 20px; border-left: 1px solid var(--border-color);">
+                     <div style="text-align: right; margin-bottom: 10px;">
+                        <span class="label" style="display: block; font-size: 0.8rem; color: var(--text-light);">Seats Booked</span>
+                        <span class="value" style="display: block; font-size: 1.2rem; font-weight: 700; color: var(--text-color);">${booking.seats_booked}</span>
+                    </div>
                 </div>
             </div>
             `;
@@ -721,15 +748,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.innerHTML = rides.map(ride => {
             return `
-            <div class="ride-card">
-                <div class="ride-header" style="justify-content: space-between; display: flex; margin-bottom: 10px;">
-                    <span class="date" style="color: var(--text-light); font-size: 0.9rem;">Departure: ${ride.departure_date}</span>
-                    <span class="seats" style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">${ride.seats_available} seats left</span>
+            <div class="ride-card horizontal">
+                <div class="ride-main">
+                    <div class="ride-header" style="margin-bottom: 15px;">
+                         <span class="driver-info">
+                            <i class="fas fa-steering-wheel" style="color: var(--text-light); margin-right: 8px;"></i>
+                            <span style="font-weight: 600; color: var(--text-color);">Your Ride Offer</span>
+                         </span>
+                         <span class="seats-badge" style="background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">${ride.seats_available} seats left</span>
+                    </div>
+                    
+                    <div class="ride-times">
+                        <div class="time-loc">
+                            <span class="time">${ride.departure_time.slice(0, 5)}</span>
+                            <span class="city">${ride.origin}</span>
+                        </div>
+                        <div class="duration-line">
+                            <span class="duration" style="background: var(--background-color); padding: 0 10px; color: var(--text-light); font-size: 0.8rem;">${ride.departure_date}</span>
+                            <div class="line"></div>
+                        </div>
+                        <div class="time-loc">
+                            <span class="city">${ride.destination}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="ride-details">
-                    <h3 style="margin-bottom: 5px; color: var(--text-color);">${ride.origin} <i class="fas fa-arrow-right" style="color: var(--primary-color);"></i> ${ride.destination}</h3>
-                    <p style="margin: 2px 0; color: var(--text-light);"><i class="far fa-clock"></i> ${ride.departure_time}</p>
-                    <p style="margin-top: 5px; font-weight: 500; color: var(--text-color);">₹${ride.price}</p>
+                
+                <div class="ride-price-action" style="display: flex; flex-direction: column; align-items: flex-end; min-width: 120px; padding-left: 20px; border-left: 1px solid var(--border-color);">
+                     <div style="text-align: right; margin-bottom: 10px;">
+                        <span class="label" style="display: block; font-size: 0.8rem; color: var(--text-light);">Price</span>
+                        <span class="price-large">₹${ride.price}</span>
+                    </div>
                 </div>
             </div>
             `;

@@ -23,18 +23,14 @@ def login_api(request):
         email = serializer.validated_data['email']
         password = serializer.validated_data['password']
         
-        try:
-            user = Users.objects.get(email=email)
-            # TODO: Use proper password hashing check!
-            if user.password_hash == password:
-                return Response({
-                    "message": "Login successful",
-                    "user": UserSerializer(user).data
-                }, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-        except Users.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        user = Users.objects.filter(email=email).first()
+        if user and user.password_hash == password:
+            return Response({
+                "message": "Login successful",
+                "user": UserSerializer(user).data
+            }, status=status.HTTP_200_OK)
+        
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -42,26 +38,22 @@ def login_api(request):
 def driver_profile_api(request):
     if request.method == 'GET':
         email = request.query_params.get('email')
-        if not email:
-            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            user = Users.objects.get(email=email)
-            driver = Drivers.objects.get(user=user)
-            serializer = DriverSerializer(driver)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except (Users.DoesNotExist, Drivers.DoesNotExist):
+            # Optimization: Fetch driver directly via user email relationship
+            driver = Drivers.objects.get(user__email=email)
+            return Response(DriverSerializer(driver).data, status=status.HTTP_200_OK)
+        except Drivers.DoesNotExist:
             return Response({"error": "Driver profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
     # POST Request logic
     email = request.data.get('email')
-    if not email:
-        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        user = Users.objects.get(email=email)
-    except Users.DoesNotExist:
+    
+    # Check for user existence
+    user = Users.objects.filter(email=email).first()
+    if not user:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    # Check for existing driver profile
     if Drivers.objects.filter(user=user).exists():
         return Response({"error": "Driver profile already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,8 +69,7 @@ def driver_profile_api(request):
 @api_view(['POST'])
 def offer_ride_api(request):
     email = request.data.get('email')
-    if not email:
-        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
 
     try:
         user = Users.objects.get(email=email)
@@ -107,19 +98,19 @@ def find_ride_api(request):
     date = request.query_params.get('date')
 
     rides = Rides.objects.all()
-    print(f"DEBUG: Initial count: {rides.count()}")
+
 
     if origin:
-        print(f"DEBUG: Filtering by origin: {origin}")
+
         rides = rides.filter(origin__icontains=origin)
     if destination:
-        print(f"DEBUG: Filtering by destination: {destination}")
+
         rides = rides.filter(destination__icontains=destination)
     if date:
-        print(f"DEBUG: Filtering by date: {date}")
+
         rides = rides.filter(departure_date=date)
     
-    print(f"DEBUG: Final count: {rides.count()}")
+
 
     # Order by date and time
     rides = rides.order_by('departure_date', 'departure_time')
@@ -174,8 +165,7 @@ def book_ride_api(request):
 @api_view(['GET'])
 def my_trips_api(request):
     email = request.query_params.get('email')
-    if not email:
-        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
     
     try:
         user = Users.objects.get(email=email)
